@@ -15,7 +15,7 @@ public void setup () {
   //your code to initialize buttons goes here
   for(int r = 0; r < NUMS_ROWS; r++)
     for(int c = 0; c < NUMS_COLS; c++)
-      buttons[r][c] = new Life(r,c)
+      buttons[r][c] = new Life(r,c);
   //your code to initialize buffer goes here
 }
 
