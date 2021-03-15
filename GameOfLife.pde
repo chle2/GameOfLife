@@ -17,6 +17,7 @@ public void setup () {
     for(int c = 0; c < NUMS_COLS; c++)
       buttons[r][c] = new Life(r,c);
   //your code to initialize buffer goes here
+  buffer = new boolean [NUM_ROWS][NUM_COLS];
 }
 
 public void draw () {
@@ -26,32 +27,92 @@ public void draw () {
   copyFromButtonsToBuffer();
 
   //use nested loops to draw the buttons here
-for(int r = 0; r < NUMS_ROWS; r++)
-    for(int c = 0; c < NUMS_COLS; c++)
+    for(int r = 0; r < NUM_ROWS; r++)
+    {
+      for(int c = 0; c < NUM_COLS; c++)
+      {
+        if(countNeighbors(r, c) == 3 )
+        {
+          buffer[r][c] = true;
+        }
+        else if(countNeighbors(r, c) == 2 && buttons[r][c].getLife()==true)
+        {
+          buffer[r][c] = true;
+        }
+        else
+        {
+          buffer[r][c] = false;
+        }
       buttons[r][c].draw();
+      }
+    }
+
   copyFromBufferToButtons();
 }
 
 public void keyPressed() {
   //your code here
+  if(key == ' ')
+      running = !running;
+  if(key == 'c')
+      for(int r = 0; r < NUM_ROWS; r++)
+        for(int c = 0; c < NUM_COLS; c++)
+          buttons[r][c].alive = false;
+  if(key == '1')
+     frameRate(2);
+  if(key == '2')
+     frameRate(6);
+  if(key == '3')
+      frameRate(10);
 }
 
 public void copyFromBufferToButtons() {
   //your code here
+  for(int r = 0; r < NUM_ROWS; r++)
+    for(int c = 0; c < NUM_COLS; c++)
+      if(buffer[r][c] == true)
+        buttons[r][c].alive = true;
+      else
+      buttons[r][c].alive = false;
 }
 
 public void copyFromButtonsToBuffer() {
   //your code here
+  for(int r = 0; r < NUM_ROWS; r++)
+    for(int c = 0; c < NUM_COLS; c++)
+      if(buttons[r][c].alive == true)
+        buffer[r][c] = true;
+      else
+      buffer[r][c] = false;
 }
 
 public boolean isValid(int r, int c) {
   //your code here
+  if(r < NUM_ROWS && r >= 0 && c < NUM_COLS && c >= 0)
+  return true;
+  else 
   return false;
 }
 
 public int countNeighbors(int row, int col) {
   int neighbors = 0;
   //your code here
+  if(isValid(row, col-1)==true && buttons[row][col-1].getLife()==true)
+    neighbors ++;
+  if(isValid(row, col+1)==true && buttons[row][col+1].getLife()==true)
+    neighbors ++;
+  if(isValid(row-1, col-1)==true && buttons[row-1][col-1].getLife()==true)
+    neighbors ++;
+  if(isValid(row+1, col+1)==true && buttons[row+1][col+1].getLife()==true)
+    neighbors ++;
+  if(isValid(row+1, col)==true && buttons[row+1][col].getLife()==true)
+    neighbors ++;
+  if(isValid(row-1, col)==true && buttons[row-1][col].getLife()==true)
+    neighbors ++;
+  if(isValid(row+1, col-1)==true && buttons[row+1][col-1].getLife()==true)
+    neighbors ++;
+  if(isValid(row-1, col+1)==true && buttons[row-1][col+1].getLife()==true)
+    neighbors ++;
   return neighbors;
 }
 
@@ -84,6 +145,11 @@ public class Life {
   }
   public boolean getLife() {
     //replace the code one line below with your code
+    if(alive == true)
+      return true;
+    else if(alive != true)
+      return false;
+    else
     return false;
   }
   public void setLife(boolean living) {
