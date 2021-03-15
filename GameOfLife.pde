@@ -154,5 +154,6 @@ public class Life {
   }
   public void setLife(boolean living) {
     //your code here
+    alive = living; 
   }
 }
